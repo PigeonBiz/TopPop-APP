@@ -13,6 +13,7 @@ module TopPop
     plugin :flash
     plugin :all_verbs # allows HTTP verbs beyond GET/POST (e.g., DELETE)
     plugin :common_logger, $stderr
+    plugin :caching
 
     use Rack::MethodOverride 
 
@@ -69,7 +70,13 @@ module TopPop
             end
 
             all_videos = get_all_videos.value!.videos
-            viewable_videos = Views::VideoList.new(all_videos)      
+            viewable_videos = Views::VideoList.new(all_videos)   
+
+            # Only use browser caching in production
+            App.configure :production do
+              response.expires 60, public: true
+            end
+
             view 'search', locals: { videos: viewable_videos }
           end
 

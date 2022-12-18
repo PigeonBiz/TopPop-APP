@@ -3,3 +3,5 @@ coverage/*
 !coverage/.resultset.json
 _snippets/
 .bundle/
+*.db
+_cache/

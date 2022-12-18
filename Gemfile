@@ -15,9 +15,10 @@ gem 'slim', '~> 4.1'
 gem 'multi_json', '~> 1.15'
 gem 'puma', '~> 6.0'
 gem 'rack-session', '~> 0.3'
+gem 'rack-cache'
 gem 'roar', '~> 1.1'
 gem 'roda', '~> 3.62'
- gem 'tilt', '~> 2.0'
+gem 'tilt', '~> 2.0'
 
 # Controllers and services
 gem 'dry-monads', '~> 1.4'
