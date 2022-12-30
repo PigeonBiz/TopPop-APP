@@ -1,0 +1,55 @@
+<div class="container px-lg-5">
+  <div class="row">
+    <h1 class="fs-4 fw-bold mgin">Congratulations <%= player_name %>!</h1>
+    <h2 class="fs-4 fw-bold mgin">Here is the result</h2>
+  </div>
+
+  <div class="row">
+    <div class="row vertical-align query-bar">
+      <div class="pt-4">
+        <% if videos.any?%>
+          <% videos.each do |video| %>
+            <div class="col-sm-12">
+              <img 
+                src=<%= video.thumbnail_url %> 
+                alt="video_thumbnail"
+                width="320" height="180"
+              />
+
+              <div class="row mb-3">
+                <label class="col-sm-3"}><strong>Name</strong></label>
+                <div class="col-sm-9"><%= video.title %></div>
+              </div>
+
+              <div class="row mb-3">
+                <label class="col-sm-3"><strong>Channel</strong></label>
+                <div class="col-sm-9"><%= video.channel_title %></div>
+              </div>
+
+              <div class="row mb-3">
+                <label class="col-sm-3"><strong>Publish date</strong></label>
+                <div class="col-sm-9"><%= video.publish_date %></div>
+              </div>
+
+              <div class="row mb-3">
+                <label class="col-sm-3"><strong>View count</strong></label>
+                <div class="col-sm-9"><%= video.view_count %></div>
+              </div>
+
+              <div class="row mb-3">
+                <label class="col-sm-3"><strong>Your ranking</strong></label>
+                <div class="col-sm-9"><%= user_rankings[video.video_id] %></div>
+              </div>
+
+              <div class="row mb-3">
+                <label class="col-sm-3"><strong>Correct ranking</strong></label>
+                <div class="col-sm-9">X</div>
+              </div>
+            <br/>
+            <br/>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

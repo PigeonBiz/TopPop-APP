@@ -1,5 +1,60 @@
 <div class="container px-lg-5">
   <div class="row">
-    <h2 class="fs-4 fw-bold mgin">The game is under development. Please be patient :))</h2>
+    <h2 class="fs-4 fw-bold mgin">Let's sort it!</h2>
+  </div>
+
+  <div class="row">
+    <form action="/result" id="ranking_form" method="POST" role="form">
+      <div class="row vertical-align query-bar">
+        <div class="pt-4">
+          <% if videos.any?%>
+            <% videos.each do |video| %>
+              <div class="col-sm-12">
+                <img 
+                  src=<%= video.thumbnail_url %> 
+                  alt="video_thumbnail"
+                  width="320" height="180"
+                />
+
+                <div class="row mb-3">
+                  <label class="col-sm-3"><strong>Your ranking</strong></label>
+                  <input 
+                    class="form-control" 
+                    id="ranking_for_<%= video.video_id %>" 
+                    name="<%= video.video_id %>" 
+                    type="number" min="1" max="5"
+                  />
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-sm-3"><strong>Name</strong></label>
+                  <div class="col-sm-9"><%= video.title %></div>
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-sm-3"><strong>Channel</strong></label>
+                  <div class="col-sm-9"><%= video.channel_title %></div>
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-sm-3"><strong>Publish date</strong></label>
+                  <div class="col-sm-9"><%= video.publish_date %></div>
+                </div>
+
+                <div class="row mb-3">
+                  <label class="col-sm-3"><strong>View count</strong></label>
+                  <div class="col-sm-9"><%= video.view_count %></div>
+                </div>
+              <br/>
+              <br/>
+            <% end %>
+          <% end %>
+        </div>
+        
+        <div class="col-md-2 col-sm-3">
+          <button class="submit btn btn-lg btn-primary" id="ranking-form-submit" type="submit" value="submit">Done</button>
+        </div>
+      </div>
+    </form>
   </div>
 </div>
