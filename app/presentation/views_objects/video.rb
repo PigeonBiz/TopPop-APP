@@ -31,6 +31,10 @@ module TopPop
       def view_count
         @video.view_count
       end
+
+      def thumbnail_url
+        @video.thumbnail_url
+      end
     end
   end
 end
