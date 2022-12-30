@@ -4,7 +4,7 @@
   </div>
 
   <div class="row">
-    <form action="/result" id="ranking_form" method="POST" role="form">
+    <form action="/results" id="ranking_form" method="POST" role="form">
       <div class="row vertical-align query-bar">
         <div class="pt-4">
           <% if videos.any?%>
@@ -39,11 +39,6 @@
                 <div class="row mb-3">
                   <label class="col-sm-3"><strong>Publish date</strong></label>
                   <div class="col-sm-9"><%= video.publish_date %></div>
-                </div>
-
-                <div class="row mb-3">
-                  <label class="col-sm-3"><strong>View count</strong></label>
-                  <div class="col-sm-9"><%= video.view_count %></div>
                 </div>
               <br/>
               <br/>
