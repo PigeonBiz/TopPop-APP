@@ -1,35 +1,31 @@
 <div class="container px-lg-5 main">
   <div>
     <% if videos.any? %>
-      <div class="fs-4 fw-bold mgin">Database record</div>
-      <form action="/score" id="game-form" method="POST" role="form">
-        <table>
+      <div class="fs-4 fw-bold mgin">Your Score:<%= score %></div>
+      <table>
+        <tr>
+          <th>Video</th>
+          <th>Channel title</th>
+          <th>Publish date</th>
+          <th>View count</th>
+          <th>Your Answer</th>
+          <th>True Answer</th>
+        </tr>
+        <% videos.each do |video| %>
           <tr>
-            <th>Video</th>
-            <th>Channel title</th>
-            <th>Publish date</th>
-            <th>View count</th>
-            <th>Your Answer</th>
-            <th>True Answer</th>
+            <td>
+              <a href="https://www.youtube.com/watch?v=<%= video.video_id %>">
+                <%= video.title %>
+              </a>  
+            </td>
+            <td><%= video.channel_title %></td>
+            <td><%= video.publish_date %></td>
+            <td><%= video.view_count %></td>
+            <td><%= player_answer[video.video_id] %></td>
+            <td><%= sort_answer[video.video_id] %></td>
           </tr>
-          <% videos.each do |video| %>
-            <tr>
-              <td>
-                <a href="https://www.youtube.com/watch?v=<%= video.video_id %>">
-                  <%= video.title %>
-                </a>  
-              </td>
-              <td><%= video.channel_title %></td>
-              <td><%= video.publish_date %></td>
-              <td><%= video.view_count %></td>
-              <td><%= player_answer[video.video_id] %></td>
-            </tr>
-          <% end %>
-        </table>
-        <div class="col-md-2 col-sm-3">
-          <button class="submit btn btn-lg btn-primary" id="game-form-submit" type="submit" value="submit">Submit</button>
-        </div>
-      </form>
+        <% end %>
+      </table>
     <% end %>
   </div>
 </div>

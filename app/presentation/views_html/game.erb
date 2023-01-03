@@ -1,11 +1,10 @@
-<div class="container px-lg-5 main">src
+<div class="container px-lg-5 main">
   <div>
     <% if videos.any? %>
-      <div class="fs-4 fw-bold mgin">Database record</div>
+      <div class="fs-4 fw-bold mgin">Please Sort The Videos' View Count From High to Low</div>
       <form action="/score" id="game-form" method="POST" role="form">
         <table>
           <tr>
-            <th></th>
             <th>Video</th>
             <th>Channel title</th>
             <th>Publish date</th>
@@ -14,13 +13,6 @@
           </tr>
           <% videos.each do |video| %>
             <tr>
-              <td>
-                <form method='get' action="/video/<%= video.video_id %>">
-                  <button type="submit" class="btn btn-sm btn-link" id="<%= video.video_id %>.delete">
-                    <i class="fas fa-trash-alt"></i>
-                  </button>
-                </form>
-              </td>
               <td>
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/<%= video.video_id %>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
               </td>

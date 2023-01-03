@@ -87,9 +87,37 @@ module TopPop
           viewable_videos = Views::VideoList.new(all_videos)   
 
           player_answer = routing.params
+
+          sort_answer = Service::CountScore.new.call()
           
           # Redirect viewer to search result page      
-          view 'score', locals: { player_answer: player_answer, videos: viewable_videos }
+          view 'score', locals: { player_answer: player_answer, videos: viewable_videos, sort_answer: sort_answer }
+        end
+      end
+
+      routing.on 'score' do
+        # POST /score
+        routing.post do
+          get_all_videos = Service::AllVideos.new.call()
+
+          if get_all_videos.failure?
+            flash[:error] = get_all_videos.failure
+            routing.redirect '/'
+          end
+
+          all_videos = get_all_videos.value!.videos
+          viewable_videos = Views::VideoList.new(all_videos)   
+
+          player_answer = routing.params
+
+          sort_answer = Service::Sort.new.call()
+          sort_answer = sort_answer.value!
+
+          score = Service::CountScore.new.call(player_answer)
+          score = score.value!
+          
+          # Redirect viewer to search result page      
+          view 'score', locals: { player_answer: player_answer, videos: viewable_videos, sort_answer: sort_answer, score: score }
         end
       end
 
