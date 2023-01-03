@@ -54,8 +54,43 @@ module TopPop
       routing.on 'game' do
         routing.is do
           # GET /game
-          view 'game'
-        end      
+          routing.get do
+            get_all_videos = Service::AllVideos.new.call()
+
+            if get_all_videos.failure?
+              flash[:error] = get_all_videos.failure
+              routing.redirect '/'
+            end
+
+            all_videos = get_all_videos.value!.videos
+            viewable_videos = Views::VideoList.new(all_videos)   
+
+            # Only use browser caching in production
+            App.configure :production do
+              response.expires 60, public: true
+            end
+
+            view 'game', locals: { videos: viewable_videos }
+          end
+        end  
+        
+        # POST /game
+        routing.post do
+          get_all_videos = Service::AllVideos.new.call()
+
+          if get_all_videos.failure?
+            flash[:error] = get_all_videos.failure
+            routing.redirect '/'
+          end
+
+          all_videos = get_all_videos.value!.videos
+          viewable_videos = Views::VideoList.new(all_videos)   
+
+          player_answer = routing.params
+          
+          # Redirect viewer to search result page      
+          view 'score', locals: { player_answer: player_answer, videos: viewable_videos }
+        end
       end
 
       routing.on 'search' do

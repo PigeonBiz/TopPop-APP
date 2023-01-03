@@ -1,5 +1,48 @@
-<div class="container px-lg-5">
-  <div class="row">
-    <h2 class="fs-4 fw-bold mgin">The game is under development. Please be patient :))</h2>
+<div class="container px-lg-5 main">src
+  <div>
+    <% if videos.any? %>
+      <div class="fs-4 fw-bold mgin">Database record</div>
+      <form action="/score" id="game-form" method="POST" role="form">
+        <table>
+          <tr>
+            <th></th>
+            <th>Video</th>
+            <th>Channel title</th>
+            <th>Publish date</th>
+            <th>View count</th>
+            <th>Ranking</th>
+          </tr>
+          <% videos.each do |video| %>
+            <tr>
+              <td>
+                <form method='get' action="/video/<%= video.video_id %>">
+                  <button type="submit" class="btn btn-sm btn-link" id="<%= video.video_id %>.delete">
+                    <i class="fas fa-trash-alt"></i>
+                  </button>
+                </form>
+              </td>
+              <td>
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/<%= video.video_id %>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+              </td>
+              <td><%= video.channel_title %></td>
+              <td><%= video.publish_date %></td>
+              <td><%= video.view_count %></td>
+              <td>
+                <select class="form-select" id="<%= video.video_id %>" name="<%= video.video_id %>" aria-label="Default select example">
+                  <option value="1">No.1</option>
+                  <option value="2">No.2</option>
+                  <option value="3">No.3</option>
+                  <option value="4">No.4</option>
+                  <option value="5">No.5</option>
+                </select>
+              </td>
+            </tr>
+          <% end %>
+        </table>
+        <div class="col-md-2 col-sm-3">
+          <button class="submit btn btn-lg btn-primary" id="game-form-submit" type="submit" value="submit">Submit</button>
+        </div>
+      </form>
+    <% end %>
   </div>
 </div>
