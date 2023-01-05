@@ -63,7 +63,9 @@ module TopPop
             end
 
             all_videos = get_all_videos.value!.videos
-            viewable_videos = Views::VideoList.new(all_videos)   
+            viewable_videos = Views::VideoList.new(all_videos) 
+            
+            session[:videos] = viewable_videos
 
             # Only use browser caching in production
             App.configure :production do
@@ -72,52 +74,36 @@ module TopPop
 
             view 'game', locals: { videos: viewable_videos }
           end
-        end  
-        
-        # POST /game
-        routing.post do
-          get_all_videos = Service::AllVideos.new.call()
-
-          if get_all_videos.failure?
-            flash[:error] = get_all_videos.failure
-            routing.redirect '/'
-          end
-
-          all_videos = get_all_videos.value!.videos
-          viewable_videos = Views::VideoList.new(all_videos)   
-
-          player_answer = routing.params
-
-          sort_answer = Service::CountScore.new.call()
-          
-          # Redirect viewer to search result page      
-          view 'score', locals: { player_answer: player_answer, videos: viewable_videos, sort_answer: sort_answer }
-        end
+        end 
       end
 
       routing.on 'score' do
-        # POST /score
+        # GET /score
         routing.post do
-          get_all_videos = Service::AllVideos.new.call()
+          viewable_videos = session[:videos] 
 
-          if get_all_videos.failure?
-            flash[:error] = get_all_videos.failure
-            routing.redirect '/'
-          end
-
-          all_videos = get_all_videos.value!.videos
-          viewable_videos = Views::VideoList.new(all_videos)   
-
-          player_answer = routing.params
+          session[:player_answer] = routing.params
+          player_answer = session[:player_answer]
 
           sort_answer = Service::Sort.new.call()
           sort_answer = sort_answer.value!
-
-          score = Service::CountScore.new.call(player_answer)
-          score = score.value!
+          
+          get_player_score = Service::CountScore.new.call(player_answer)          
+          if get_player_score.failure?
+            flash[:error] = get_player_score.failure
+            routing.redirect '/'
+          end
+          player_score = get_player_score.value!
+          # player_score = session[:player_score]
+          # session[:player_score].insert(0, project.fullname).uniq!
           
           # Redirect viewer to search result page      
-          view 'score', locals: { player_answer: player_answer, videos: viewable_videos, sort_answer: sort_answer, score: score }
+          view 'score', locals: { 
+            player_answer: player_answer, 
+            videos: viewable_videos, 
+            sort_answer: sort_answer, 
+            player_score: player_score 
+          }
         end
       end
 
