@@ -8,7 +8,6 @@
             <th>Video</th>
             <th>Channel title</th>
             <th>Publish date</th>
-            <th>View count</th>
             <th>Ranking</th>
           </tr>
           <% videos.each do |video| %>
@@ -18,7 +17,6 @@
               </td>
               <td><%= video.channel_title %></td>
               <td><%= video.publish_date %></td>
-              <td><%= video.view_count %></td>
               <td>
                 <select class="form-select" id="<%= video.video_id %>" name="<%= video.video_id %>" aria-label="Default select example">
                   <option value="1">No.1</option>
