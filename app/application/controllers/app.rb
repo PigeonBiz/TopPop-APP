@@ -44,8 +44,6 @@ module TopPop
             player_name = player_name_monad.to_h[:player_name]
             session[:player_name] = player_name
 
-            flash[:notice] = "Hi #{player_name}! Welcome to TopPop!"
-
             routing.redirect "game"
           end
         end      
@@ -77,83 +75,71 @@ module TopPop
         end 
       end
 
-      routing.on 'score' do
-        # GET /score
-        routing.post do
-          viewable_videos = session[:videos] 
+      routing.on 'result' do
+        routing.is do
+          # POST /result
+          routing.post do
+            player_name = session[:player_name]
 
-          session[:player_answer] = routing.params
-          player_answer = session[:player_answer]
+            # Calculate score
+            player_answer = routing.params
+            session[:player_answer] = player_answer
 
-          sort_answer = Service::Sort.new.call()
-          sort_answer = sort_answer.value!
-          
-          get_player_score = Service::CountScore.new.call(player_answer)          
-          if get_player_score.failure?
-            flash[:error] = get_player_score.failure
-            routing.redirect '/'
+            sort_answer = Service::Sort.new.call()
+            sort_answer = sort_answer.value!
+            session[:sort_answer] = sort_answer
+            
+            get_player_score = Service::CountScore.new.call(player_answer)          
+            if get_player_score.failure?
+              flash[:error] = get_player_score.failure
+              routing.redirect '/'
+            end
+            player_score = get_player_score.value!
+            session[:player_score] = player_score
+
+            # Save game record to cookie
+            session[:records] ||= []
+            game_record = {}
+            game_record[:player_name] = player_name
+            game_record[:time] = Time.now.strftime("%Y-%m-%d %H:%M:%S")
+            game_record[:player_score] = player_score
+            session[:records].insert(0, game_record).uniq!
+                
+            view 'result', locals: { 
+              player_name: player_name,
+              player_score: player_score 
+            }
           end
-          player_score = get_player_score.value!
-          # player_score = session[:player_score]
-          # session[:player_score].insert(0, project.fullname).uniq!
-          
-          # Redirect viewer to search result page      
-          view 'score', locals: { 
-            player_answer: player_answer, 
-            videos: viewable_videos, 
-            sort_answer: sort_answer, 
-            player_score: player_score 
-          }
         end
       end
 
-      routing.on 'search' do
+      routing.on 'answer' do 
         routing.is do
-          # GET /search
           routing.get do
-            get_all_videos = Service::AllVideos.new.call()
+            # GET /answer         
+            view 'answer', locals: { 
+              videos: session[:videos], 
+              player_name: session[:player_name], 
+              player_answer: session[:player_answer], 
+              sort_answer: session[:sort_answer], 
+              player_score: session[:player_score]
+            }
+          end
+        end
+      end 
 
-            if get_all_videos.failure?
-              flash[:error] = get_all_videos.failure
-              routing.redirect '/'
-            end
-
-            all_videos = get_all_videos.value!.videos
-            viewable_videos = Views::VideoList.new(all_videos)   
-
+      routing.on 'records' do
+        routing.is do
+          # GET /records
+          routing.get do
             # Only use browser caching in production
             App.configure :production do
               response.expires 60, public: true
             end
 
-            view 'search', locals: { videos: viewable_videos }
+            view 'records', locals: { records: session[:records] }
           end
-
-          # POST /search
-          routing.post do
-            search_keyword = routing.params['search_keyword']
-            
-            # Redirect viewer to search result page      
-            routing.redirect "search/#{search_keyword}"
-          end
-        end
-        
-        routing.on String do |search_keyword|
-          # GET /search/{search_keyword}
-          routing.get do    
-            search_keyword_monad = Forms::SearchKeyword.new.call({:search_keyword => search_keyword})
-            search_result = Service::SearchVideos.new.call(search_keyword_monad)
-    
-            if search_result.failure?
-              flash[:error] = search_result.failure
-              routing.redirect '/search'
-            end
-
-            searched_videos = search_result.value!.videos
-            viewable_searched_videos = Views::VideoList.new(searched_videos)
-            view 'searched_videos', locals: { videos: viewable_searched_videos }
-          end
-        end        
+        end      
       end
     end
   end
