@@ -1,0 +1,21 @@
+<div class="container px-lg-5 main">
+  <div class="fs-4 fw-bold mgin">Game records</div> 
+  <% if !records %>
+    <div class="fs-5 fw-bold mgin">No game records saved</div>
+  <% else %>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Date played</th>
+        <th>Score</th>
+      </tr>
+      <% records.each do |record| %>
+        <tr>
+          <td><%= record[:player_name] %></td>
+          <td><%= record[:time] %></td>
+          <td><%= record[:player_score] %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+</div>

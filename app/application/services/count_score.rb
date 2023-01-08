@@ -1,19 +1,25 @@
 # frozen_string_literal: true
 
-require 'dry/monads'
+require 'dry/transaction'
 
 module TopPop
   module Service
-    # Search history score
     class CountScore
-      include Dry::Monads::Result::Mixin
+      include Dry::Transaction
 
-      def call(answer)
-        score = Game::ScoreCounter.check_score(answer)
+      step :count_score
 
+      private
+
+      def count_score(player_answer)
+        sort_answer = Service::Sort.new.call()
+        sort_answer = sort_answer.value!
+        videos_id = player_answer.keys
+        score = 0
+        videos_id.each { |key| score += 20 if sort_answer[key] == player_answer[key].to_i}
         Success(score)
       rescue StandardError
-        Failure(error.to_s)
+        Failure('Error in counting score; please try again later')
       end
     end
   end

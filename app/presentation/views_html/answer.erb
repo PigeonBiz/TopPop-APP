@@ -1,0 +1,35 @@
+<div class="container px-lg-5 main">
+  <% if videos.any? %>
+    <div class="fs-5 fw-bold mgin"><%= player_name %>'s score is <%= player_score %>/100</div>
+
+    <table>
+      <tr>
+        <th>Video</th>
+        <th>Channel title</th>
+        <th>Publish date</th>
+        <th>View count</th>
+        <th>Your Answer</th>
+        <th>Correct Answer</th>
+      </tr>
+      <% videos.each do |video| %>
+        <tr>
+          <td>
+            <a href="https://www.youtube.com/watch?v=<%= video.video_id %>">
+              <%= video.title %>
+            </a>  
+          </td>
+          <td><%= video.channel_title %></td>
+          <td><%= video.publish_date %></td>
+          <td><%= video.view_count %></td>
+          <td><%= player_answer[video.video_id] %></td>
+          <td><%= sort_answer[video.video_id] %></td>
+        </tr>
+      <% end %>
+    </table>
+  <% end %>
+
+  <div class="mgin">
+    <button class="submit btn btn-primary btn-mgin" id="try-again-submit" type="submit" value="submit"><a class="navbar-brand" href="/game">Try again</a></button>
+    <button class="submit btn btn-primary btn-mgin" id="back-home-submit" type="submit" value="submit"><a class="navbar-brand" href="/">Back home</a></button>
+  </div>
+</div>

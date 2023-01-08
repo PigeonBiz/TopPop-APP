@@ -1,5 +1,45 @@
-<div class="container px-lg-5">
-  <div class="row">
-    <h2 class="fs-4 fw-bold mgin">The game is under development. Please be patient :))</h2>
-  </div>
+<div class="container px-lg-5 main">
+  <% if videos.any? %>
+    <div class="fs-3 fw-bold mgin">Let's sort them!</div>
+    <p>No.1 video has the highest views. No.5 video has the lowest views.</p> 
+    <form action="/result" id="game-form" method="POST" role="form">
+      <table>
+        <% videos.each do |video| %>
+          <tr>
+            <td>
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/<%= video.video_id %>" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </td>
+            <td>
+              <div class="row mb-3">
+                <label class="col-sm-3"><strong>Video</strong></label>
+                <div class="col-sm-9"><%= video.title %></div>
+              </div>
+              
+              <div class="row mb-3">
+                <label class="col-sm-3"><strong>Channel</strong></label>
+                <div class="col-sm-9"><%= video.channel_title %></div>
+              </div>
+
+              <div class="row mb-3">
+                <label class="col-sm-3"><strong>Publish date</strong></label>
+                <div class="col-sm-9"><%= video.publish_date %></div>
+              </div>
+
+              <select class="form-select" id="<%= video.video_id %>" name="<%= video.video_id %>" aria-label="Default select example">
+                <option value="1">No.1</option>
+                <option value="2">No.2</option>
+                <option value="3">No.3</option>
+                <option value="4">No.4</option>
+                <option value="5">No.5</option>
+              </select>
+            </td>
+          </tr>
+        <% end %>
+      </table>
+
+      <div class="col-md-2 col-sm-3 mgin">
+        <button class="submit btn btn-lg btn-primary" id="game-form-submit" type="submit" value="submit">Submit</button>
+      </div>
+    </form>
+  <% end %>
 </div>

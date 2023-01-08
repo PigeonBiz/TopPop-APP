@@ -1,0 +1,16 @@
+<div class="container px-lg-5 main">
+  <div class="main">
+    <% if (player_score > 50) %>
+      <div class="fs-4 fw-bold mgin">Congratulations <%= player_name %>! </div>
+    <% else %>
+      <div class="fs-4 fw-bold mgin">Nice try, <%= player_name %>! </div>
+    <% end %>
+    <div class="fs-5 fw-bold mgin">Your score is <%= player_score %>/100</div>
+  </div>
+
+  <div class="main">
+    <button class="submit btn btn-primary btn-mgin" id="show-answer-submit" type="submit" value="submit"><a class="navbar-brand" href="/answer">Show answer</a></button>
+    <button class="submit btn btn-primary btn-mgin" id="show-record-submit" type="submit"value="submit"><a class="navbar-brand" href="/game">Try again</a></button>
+    <button class="submit btn btn-primary btn-mgin" id="back-home-submit" type="submit" value="submit"><a class="navbar-brand" href="/">Back home</a></button>
+  </div>
+</div>

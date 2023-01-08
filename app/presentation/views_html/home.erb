@@ -1,12 +1,15 @@
 <div class="container px-lg-5 main">
-  <div class="mgin11">
-    <h2 class="fs-4 fw-bold">Enter your username</h2>
-    <p>Username should only contains letters, numbers and underscore. For example, you can be "pro_1337" :))</p>        
+  <div class="mgin">
+    <h1 class="fs-3 fw-bold mgin">Welcome to TopPop!</h1>
+    <div class="fs-5 fw-bold mgin">How to play?</div>
+    <p>You will be given 5 Top Pop music videos in random order. You need to sort them from most views to least views. Let's play!</p>        
+    <div class="fs-5 fw-bold mgin">Enter your username</div>
+    <p>Username should only contains letters, numbers and underscore. For example, you can be "pro_1337" :))</p>
   </div>
   <form action="/player" id="player-name-form" method="POST" role="form">
     <div class="row vertical-align query-bar">
       <div class="col-md-10 col-sm-3">
-        <input class="form-control" id="player-name" name="player_name" type="text" />
+        <input class="form-control" id="player-name" name="player_name" type="text" required/>
       </div>
       <div class="col-md-2 col-sm-3">
         <button class="submit btn btn-lg btn-primary" id="player-name-submit" type="submit" value="submit">Play</button>
