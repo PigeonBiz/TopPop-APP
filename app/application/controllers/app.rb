@@ -104,6 +104,9 @@ module TopPop
             game_record[:time] = Time.now.strftime("%Y-%m-%d %H:%M:%S")
             game_record[:player_score] = player_score
             session[:records].insert(0, game_record).uniq!
+            if (session[:records].length > 15)
+              session[:records] = session[:records].slice(0,15)
+            end
                 
             view 'result', locals: { 
               player_name: player_name,

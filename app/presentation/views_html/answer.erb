@@ -4,7 +4,7 @@
 
     <table>
       <tr>
-        <th>Video</th>
+        <th>Video title</th>
         <th>Channel title</th>
         <th>Publish date</th>
         <th>View count</th>
@@ -20,7 +20,7 @@
           </td>
           <td><%= video.channel_title %></td>
           <td><%= video.publish_date %></td>
-          <td><%= video.view_count %></td>
+          <td><%= TopPop::Views::ParseView.call(video.view_count) %></td>
           <td><%= player_answer[video.video_id] %></td>
           <td><%= sort_answer[video.video_id] %></td>
         </tr>
