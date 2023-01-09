@@ -15,7 +15,7 @@ module TopPop
     plugin :common_logger, $stderr
     plugin :caching
 
-    use Rack::MethodOverride 
+    use Rack::MethodOverride
 
     route do |routing|
       routing.assets # load CSS
@@ -26,7 +26,7 @@ module TopPop
         view 'home'
       end
 
-      # Virtual route to verify and save player's input 
+      # Virtual route to verify and save player's input
       routing.on 'player' do
         routing.is do
           # POST /player
@@ -44,16 +44,16 @@ module TopPop
             player_name = player_name_monad.to_h[:player_name]
             session[:player_name] = player_name
 
-            routing.redirect "game"
+            routing.redirect 'game'
           end
-        end      
+        end
       end
 
       routing.on 'game' do
         routing.is do
           # GET /game
           routing.get do
-            get_all_videos = Service::AllVideos.new.call()
+            get_all_videos = Service::AllVideos.new.call
 
             if get_all_videos.failure?
               flash[:error] = get_all_videos.failure
@@ -61,8 +61,8 @@ module TopPop
             end
 
             all_videos = get_all_videos.value!.videos
-            viewable_videos = Views::VideoList.new(all_videos) 
-            
+            viewable_videos = Views::VideoList.new(all_videos)
+
             session[:videos] = viewable_videos
 
             # Only use browser caching in production
@@ -72,7 +72,7 @@ module TopPop
 
             view 'game', locals: { videos: viewable_videos }
           end
-        end 
+        end
       end
 
       routing.on 'result' do
@@ -85,11 +85,11 @@ module TopPop
             player_answer = routing.params
             session[:player_answer] = player_answer
 
-            sort_answer = Service::Sort.new.call()
+            sort_answer = Service::Sort.new.call
             sort_answer = sort_answer.value!
             session[:sort_answer] = sort_answer
-            
-            get_player_score = Service::CountScore.new.call(player_answer)          
+
+            get_player_score = Service::CountScore.new.call(player_answer)
             if get_player_score.failure?
               flash[:error] = get_player_score.failure
               routing.redirect '/'
@@ -101,35 +101,33 @@ module TopPop
             session[:records] ||= []
             game_record = {}
             game_record[:player_name] = player_name
-            game_record[:time] = Time.now.strftime("%Y-%m-%d %H:%M:%S")
+            game_record[:time] = Time.now.strftime('%Y-%m-%d %H:%M:%S')
             game_record[:player_score] = player_score
             session[:records].insert(0, game_record).uniq!
-            if (session[:records].length > 15)
-              session[:records] = session[:records].slice(0,15)
-            end
-                
-            view 'result', locals: { 
-              player_name: player_name,
-              player_score: player_score 
+            session[:records] = session[:records].slice(0, 15) if session[:records].length > 15
+
+            view 'result', locals: {
+              player_name:,
+              player_score:
             }
           end
         end
       end
 
-      routing.on 'answer' do 
+      routing.on 'answer' do
         routing.is do
           routing.get do
-            # GET /answer         
-            view 'answer', locals: { 
-              videos: session[:videos], 
-              player_name: session[:player_name], 
-              player_answer: session[:player_answer], 
-              sort_answer: session[:sort_answer], 
+            # GET /answer
+            view 'answer', locals: {
+              videos: session[:videos],
+              player_name: session[:player_name],
+              player_answer: session[:player_answer],
+              sort_answer: session[:sort_answer],
               player_score: session[:player_score]
             }
           end
         end
-      end 
+      end
 
       routing.on 'records' do
         routing.is do
@@ -142,7 +140,7 @@ module TopPop
 
             view 'records', locals: { records: session[:records] }
           end
-        end      
+        end
       end
     end
   end

@@ -4,6 +4,7 @@ require 'dry/transaction'
 
 module TopPop
   module Service
+    # service of get answer
     class Sort
       include Dry::Transaction
 
@@ -11,9 +12,9 @@ module TopPop
       step :sort_videos
 
       private
-      
-      def get_all_videos()
-        get_all_videos = Service::AllVideos.new.call()
+
+      def get_all_videos
+        get_all_videos = Service::AllVideos.new.call
         viewable_videos = get_all_videos.value!.videos
         Success(viewable_videos)
       rescue StandardError
@@ -22,8 +23,8 @@ module TopPop
 
       def sort_videos(viewable_videos)
         all_videos = {}
-        viewable_videos.each { |video| all_videos.store(video.video_id,video.view_count) } 
-        all_videos = all_videos.sort_by {|_key, value| value}.to_h
+        viewable_videos.each { |video| all_videos.store(video.video_id, video.view_count) }
+        all_videos = all_videos.sort_by { |_key, value| value }.to_h
         sorted_videos = {}
         sorted_videos[all_videos.keys[0]] = 5
         sorted_videos[all_videos.keys[1]] = 4

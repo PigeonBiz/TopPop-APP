@@ -16,7 +16,7 @@ module TopPop
         if player_name.success?
           Success(player_name)
         else
-          Failure("#{player_name.errors.messages.first}")
+          Failure(player_name.errors.messages.first.to_s)
         end
       end
     end
