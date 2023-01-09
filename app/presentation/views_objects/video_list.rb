@@ -10,10 +10,8 @@ module TopPop
         @videos = videos.map { |video| Video.new(video) }
       end
 
-      def each
-        @videos.each do |video|
-          yield video
-        end
+      def each(&block)
+        @videos.each(&block)
       end
 
       def any?
