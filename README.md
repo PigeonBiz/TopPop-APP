@@ -6,13 +6,13 @@ TopPop is a music video sorting game. To win this game, you have to accurately s
 
 TopPop source code contains the web application repo (this repo) and [the web api repo](https://github.com/PigeonBiz/TopPop-api).
 
-The application is live here: [https://toppop.herokuapp.com](https://toppop.herokuapp.com).
+<!-- The application is live here: [https://toppop.herokuapp.com](https://toppop.herokuapp.com). -->
 
-### Instructions 
+### How to play
 
-Please use the Chrome browser to open [the TopPop website](https://toppop.herokuapp.com) because some videos couldn't be displayed in other browsers.
+<!-- Please use the Chrome browser to open [the TopPop website](https://toppop.herokuapp.com) because some videos couldn't be displayed in other browsers.
 
-The application is running under Heroku free tier, so it will take some time to wake up. Please be patient!
+The application is running under Heroku free tier, so it will take some time to wake up. Please be patient! -->
 
 You need to input a username. 
 
